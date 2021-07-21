@@ -1,0 +1,42 @@
+server:
+   port: 9010
+spring:
+   application:
+      name: learn365-user
+   datasource:
+     driver: com.mysql.jdbc.Driver
+     url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_usermanagement
+     username: learn365
+     password: 0nlineeducation
+     hikari:
+       maximum-pool-size: 5
+   jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+      properties:
+         hibernate:
+            dialect: org.hibernate.dialect.MySQL5Dialect
+            
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+    
+learn365:
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/v1/user/service/**,/v1/role/service/**,/v1/register
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

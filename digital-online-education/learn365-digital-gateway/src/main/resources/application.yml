@@ -1,0 +1,69 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: learn365-education-gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: learn365-user
+          #uri: http://localhost:9000
+          predicates:
+            - Path=/users/**
+          filters:
+            - TokenRelay=
+eureka:
+  client:
+    registerWithEureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 22000
+
+ribbon:
+  ConnectionTimeout: 10000
+  ReadTimeout: 10000
+
+zuul:
+  routes:
+    course_portfolio_services:
+      path: /course/**
+      serviceId: course_portfolio_services
+    learn365-subscription_services:
+      path: /subscription/**
+      serviceId: learn365-subscription_services
+    learn365-user:
+      path: /users/**
+      serviceId: learn365-user
+    learn365-security:
+      path: /security/**
+      serviceId: learn365-security
+  ribbon:
+    eager-load:
+      enabled: true
+
+security:
+  oauth2:
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+
+learn365:
+  security:
+    ignore: /oauth/**,/security/**,/users/v1/register
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
