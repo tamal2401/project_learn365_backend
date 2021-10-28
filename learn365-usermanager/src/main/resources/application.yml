@@ -1,0 +1,108 @@
+spring:
+  application:
+    name: learn365-user
+---
+spring:
+   profiles: test
+   datasource:
+     driver: com.mysql.jdbc.Driver
+     url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_usermanagement
+     username: learn365
+     password: 0nlineeducation
+     hikari:
+       maximum-pool-size: 3
+   jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+      properties:
+         hibernate:
+            dialect: org.hibernate.dialect.MySQL5Dialect
+
+   mail:
+     host: email-smtp.ap-south-1.amazonaws.com
+     port: 587
+     username: AKIAXHBJ6R3PIE6IFGH3
+     password: BETod8Fpgxi7r7oNBVxedkjCmrHktS77OYOB8lCKjq46
+     properties:
+       mail:
+         smtp:
+           auth: true
+           starttls:
+             enable: true
+     from: learn365education@gmail.com
+     otpSubject: learn365 Otp verification
+     raiseAQuestionSubject: Ask a question
+     bookAClassSubject: Book a class
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+    
+learn365:
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/v1/user/service/**,/v1/role/service/**,/v1/register,/v1/signedCookie/service/**,/v1/service/**,/v1/otp/**
+  logging:
+    directory: /var/log/lear365-log
+    logstash:
+      host: localhost:5043
+  otp:
+    validity: 30
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+---
+spring:
+  profiles: cloud
+  datasource:
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_usermanagement
+    username: learn365
+    password: 0nlineeducation
+    hikari:
+      maximum-pool-size: 3
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+
+learn365:
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/v1/user/service/**,/v1/role/service/**,/v1/register,/v1/signedCookie/service/**
+  logging:
+    directory:
+    logstash:
+      host:
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

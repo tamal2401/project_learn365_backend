@@ -1,0 +1,153 @@
+spring:
+  application:
+    name: learn365-education-gateway-service
+
+---
+
+spring:
+  profiles: test
+  cloud:
+    gateway:
+      routes:
+        - id: learn365-user
+          #uri: http://localhost:9000
+          predicates:
+            - Path=/users/**
+          filters:
+            - TokenRelay=
+eureka:
+  client:
+    registerWithEureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 22000
+
+ribbon:
+  ConnectionTimeout: 10000
+  ReadTimeout: 10000
+
+zuul:
+  routes:
+    course-portfolio-services:
+      path: /course/**
+      serviceId: course-portfolio-services
+    learn365-subscription_services:
+      path: /subscription/**
+      serviceId: learn365-subscription_services
+    learn365-user:
+      path: /users/**
+      serviceId: learn365-user
+    learn365-security:
+      path: /security/**
+      serviceId: learn365-security
+    learn365-test-service:
+      path: /test/**
+      serviceId: learn365-test-service
+  ribbon:
+    eager-load:
+      enabled: true
+
+security:
+  oauth2:
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+
+learn365:
+  security:
+    ignore: /oauth/**,/security/**,/users/v1/register,/course/v1/grade/getAllGrade,/test/v1/excel/**,/users/v1/otp/**
+  logging:
+    directory: /var/log/lear365-log
+    logstash:
+      host: localhost:5043
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+---
+
+spring:
+  profiles: cloud
+  cloud:
+    gateway:
+      routes:
+        - id: learn365-user
+          #uri: http://localhost:9000
+          predicates:
+            - Path=/users/**
+          filters:
+            - TokenRelay=
+eureka:
+  client:
+    registerWithEureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 22000
+
+ribbon:
+  ConnectionTimeout: 10000
+  ReadTimeout: 10000
+
+zuul:
+  routes:
+    course-portfolio-services:
+      path: /course/**
+      serviceId: course-portfolio-services
+    learn365-subscription_services:
+      path: /subscription/**
+      serviceId: learn365-subscription_services
+    learn365-user:
+      path: /users/**
+      serviceId: learn365-user
+    learn365-security:
+      path: /security/**
+      serviceId: learn365-security
+    learn365-test-service:
+      path: /test/**
+      serviceId: learn365-test-service
+  ribbon:
+    eager-load:
+      enabled: true
+
+security:
+  oauth2:
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+
+learn365:
+  security:
+    ignore: /oauth/**,/security/**,/users/v1/register,/course/v1/grade/getAllGrade,/test/v1/excel/**
+  logging:
+    directory:
+    logstash:
+      host:
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

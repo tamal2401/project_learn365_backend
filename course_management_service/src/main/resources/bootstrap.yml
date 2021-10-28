@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: test
+server:
+  port: 9018
+  application:
+    name: course-portfolio-services
+

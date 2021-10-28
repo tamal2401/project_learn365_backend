@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: test
+server:
+  port: 9015
+  application:
+    name: learn365-subscription_services

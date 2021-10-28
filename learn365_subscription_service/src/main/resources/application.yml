@@ -1,0 +1,133 @@
+spring:
+  application:
+    name: learn365-subscription_services
+
+---
+spring:
+  profiles: test
+  cloud:
+    stream:
+      bindings:
+        applyUserSubscriptionChannel:
+          destination: learn365_course_subscription_exchange
+          group: learn365_course_management_group
+          contentType: application/json
+          binder: rabbit
+      default-binder: rabbit
+      rabbit:
+        default:
+          type: rabbit
+          bindingRoutingKey: learn365_course_management_group
+          exchangeType: topic
+        binder:
+          brokers: localhost
+          autoCreateTopics: true
+          autoAddPartitions: true
+          defaultBrokerPort: 5672
+          username: guest
+          password: guest
+
+learn365:
+  datasource:
+    driver: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_subscription
+    username: learn365
+    password: 0nlineeducation
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      dialect: org.hibernate.dialect.MySQL5Dialect
+      format_sql: true
+      show_sql: true
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/v1/subscriptionportfolio/service/**,/v1/userSubscription/service/**,/v1/service/**
+  logging:
+    directory: /var/log/lear365-log
+    logstash:
+      host: localhost:5043
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+---
+
+spring:
+  profiles: cloud
+  cloud:
+    stream:
+      bindings:
+        applyUserSubscriptionChannel:
+          destination: learn365_course_subscription_exchange
+          group: learn365_course_management_group
+          contentType: application/json
+          binder: rabbit
+      default-binder: rabbit
+      rabbit:
+        default:
+          type: rabbit
+          bindingRoutingKey: learn365_course_management_group
+          exchangeType: topic
+        binder:
+          brokers: localhost
+          autoCreateTopics: true
+          autoAddPartitions: true
+          defaultBrokerPort: 5672
+          username: guest
+          password: guest
+
+learn365:
+  datasource:
+    driver: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_subscription
+    username: learn365
+    password: 0nlineeducation
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      dialect: org.hibernate.dialect.MySQL5Dialect
+      format_sql: true
+      show_sql: true
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/v1/subscriptionportfolio/service/**,/v1/userSubscription/service/**,/v1/service/**
+  logging:
+    directory:
+    logstash:
+      host:
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

@@ -1,0 +1,80 @@
+spring:
+   application:
+      name: learn365-security
+
+---
+spring:
+   profiles: test
+   datasource:
+      driver: com.mysql.jdbc.Driver
+      url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_usermanagement
+      username: learn365
+      password: 0nlineeducation
+      hikari:
+         maximum-pool-size: 5
+   jpa:
+      show-sql: true
+      hibernate:         
+      properties:
+         hibernate:
+            dialect: org.hibernate.dialect.MySQL5Dialect
+learn365:
+   security:
+      ignore: /v1/user/logout
+   logging:
+      directory: /var/log/lear365-log
+      logstash:
+         host: localhost:5043
+
+eureka:
+   client:
+      registerWithEureka: true
+      fetch-registry: true
+      service-url:
+         defaultZone: http://localhost:8999/eureka
+
+logging:
+   level:
+      org:
+         springframework:
+            security: DEBUG
+
+
+---
+
+spring:
+   profiles: cloud
+   datasource:
+      driver: com.mysql.jdbc.Driver
+      url: jdbc:mysql://database-1.ckbg4rgzbz67.ap-south-1.rds.amazonaws.com:3306/learn365_usermanagement
+      username: learn365
+      password: 0nlineeducation
+      hikari:
+         maximum-pool-size: 5
+   jpa:
+      show-sql: true
+      hibernate:
+      properties:
+         hibernate:
+            dialect: org.hibernate.dialect.MySQL5Dialect
+learn365:
+   security:
+      ignore: /v1/user/logout
+   logging:
+      directory:
+      logstash:
+         host:
+
+eureka:
+   client:
+      registerWithEureka: true
+      fetch-registry: true
+      service-url:
+         defaultZone: http://localhost:8999/eureka
+
+logging:
+   level:
+      org:
+         springframework:
+            security: DEBUG
+

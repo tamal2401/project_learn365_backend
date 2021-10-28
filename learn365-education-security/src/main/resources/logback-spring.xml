@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <springProperty scope="context" name="application" source="spring.application.name"
+                    defaultValue="course-portfolio-services"/>
+    <springProperty scope="context" name="logfiledirectory" source="learn365.logging.directory"
+                    defaultValue="/var/log/lear365-log"/>
+    <springProperty scope="context" name="logfile" source="spring.application.name"
+                    defaultValue="learn365-security.log"/>
+    <springProperty scope="context" name="logstashhost" source="learn365.logging.logstash.host"
+                    defaultValue="localhost:5043"/>
+    <springProperty scope="context" name="maxFileSize" source="logging.filesize.max" defaultValue="10MB"/>
+    <springProperty scope="context" name="maxArchiveSize" source="logging.archivesize.max" defaultValue="20MB"/>
+    <springProperty scope="context" name="maxHistory" source="logging.history.max" defaultValue="60"/>
+    <springProperty scope="context" name="devLogLevel" source="logging.dev.loglevel" defaultValue="INFO"/>
+    <springProperty scope="context" name="stagingLogLevel" source="logging.staging.loglevel" defaultValue="INFO"/>
+    <springProperty scope="context" name="productionLogLevel" source="logging.production.loglevel" defaultValue="INFO"/>
+
+    <!--Open when we will configure the logstash-->
+    <!--<appender name="logStashAppender"
+              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${logstashhost}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>-->
+
+    <appender name="consoleOut" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder
+            by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rolling"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logfiledirectory}/${logfile}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logfile}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${maxArchiveSize}</totalSizeCap>
+        </rollingPolicy>
+        <!-- <encoder class="net.logstash.logback.encoder.LogstashEncoder" /> -->
+        <encoder>
+            <pattern>%d{dd-MMM-yy HH:mm:ss.SSS} %-5level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <springProfile name="test">
+        <!--<root level="${stagingLogLevel}">
+            <appender-ref ref="logStashAppender" />
+        </root> -->
+        <root level="INFO">
+            <appender-ref ref="rolling"/>
+        </root>
+        <logger name="org.springframework.security" level="INFO">
+            <appender-ref ref="consoleOut"/>
+        </logger>
+        <logger name="org.springframework.boot" level="INFO">
+            <appender-ref ref="consoleOut"/>
+        </logger>
+        <logger name="org.learn365" level="DEBUG">
+            <appender-ref ref="rolling"/>
+        </logger>
+        <logger name="org.hibernate" level="INFO">
+            <appender-ref ref="rolling"/>
+        </logger>
+
+    </springProfile>
+
+    <springProfile name="cloud">
+        <!--<root level="${productionLogLevel}">
+            <appender-ref ref="logStashAppender" />
+        </root>-->
+        <logger name="org" level="${productionLogLevel}">
+            <appender-ref ref="consoleOut"/>
+        </logger>
+        <logger name="org.appfabs.sample.logaggregation" level="${productionLogLevel}">
+            <appender-ref ref="rolling"/>
+        </logger>
+    </springProfile>
+</configuration>

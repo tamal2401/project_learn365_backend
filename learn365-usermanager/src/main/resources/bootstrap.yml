@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: test
+server:
+  port: 9010
+  application:
+    name: learn365-user

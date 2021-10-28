@@ -1,0 +1,120 @@
+spring:
+  application:
+    name: learn365-test-service
+
+---
+spring:
+  profiles: test
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/learn365test
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  cloud:
+    stream:
+      bindings:
+        videoTestStatusListener:
+          destination: learn365_course_video_test_status_exchange
+          group: learn365_course_management_group
+          contentType: application/json
+          binder: rabbit
+      default-binder: rabbit
+      rabbit:
+        default:
+          type: rabbit
+          bindingRoutingKey: learn365_course_management_group
+          exchangeType: topic
+        binder:
+          brokers: localhost
+          autoCreateTopics: true
+          autoAddPartitions: true
+          defaultBrokerPort: 5672
+          username: guest
+          password: guest
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    enabled: false
+
+learn365:
+  security:
+    ignore: /**
+  logging:
+    directory: /var/log/lear365-log
+    logstash:
+      host: localhost:5043
+file:
+  local:
+    path: C:\Users\dasta\Downloads\learn365\uploaded_files
+
+---
+spring:
+  profiles: cloud
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  cloud:
+    stream:
+      bindings:
+        videoTestStatusListener:
+          destination: learn365_course_video_test_status_exchange
+          group: learn365_course_management_group
+          contentType: application/json
+          binder: rabbit
+      default-binder: rabbit
+      rabbit:
+        default:
+          type: rabbit
+          bindingRoutingKey: learn365_course_management_group
+          exchangeType: topic
+        binder:
+          brokers: localhost
+          autoCreateTopics: true
+          autoAddPartitions: true
+          defaultBrokerPort: 5672
+          username: guest
+          password: guest
+file:
+  local:
+    path: /learn365/uploaded-files
+
+datasource:
+  mongo:
+    database: learn365test
+    host: 3.109.133.250
+    port: 27017
+    username: tamal
+    password: Test@db
+
+learn365:
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/favicon.ico,/assets/**,/v1/test/service/**,/v1/excel/**,/error
+  logging:
+    directory: /var/log/lear365-log
+    logstash:
+      host: localhost:5043
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8999/eureka
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: learn365onlineeducation
+      client-secret: le1rnDigit1lCourse
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
