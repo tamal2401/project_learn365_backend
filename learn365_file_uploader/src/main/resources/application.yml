@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  application:
+    name: learn365-file-uploader
+
+---
+spring:
+  profiles: local
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+file:
+  local:
+    path: 'C:\learn365_uploaded_files'
+
+learn365:
+  security:
+    ignore: /v2/api-docs,/configuration/ui,/swagger-resources/**,/configuration/security,/swagger-ui.html,/webjars/**,/favicon.ico,/assets/**,/v1/test/service/**,/v1/excel/**,/error
+
+logging:
+  level:
+    root: INFO
+
+cloud:
+  common:
+    ip: 3.109.133.250
+  service:
+    course: http://${cloud.common.ip}:9012
+    test: http://${cloud.common.ip}:9096
+
+server:
+  port: 9096

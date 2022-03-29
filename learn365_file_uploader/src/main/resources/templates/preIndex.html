@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Test Report Upload</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"/>
+
+    <style>
+		.container {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .row {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/v1/excel/report}">
+            <img src="../static/images/img.png"
+                 th:src="@{/images/img.png}"
+                 width="30" height="30"
+                 class="d-inline-block align-top"
+            >
+            Learn365
+        </a>
+        <br>
+    </div>
+</nav>
+
+<div class="container">
+    <div align="center">
+        <form method="POST" enctype="multipart/form-data" action="/v1/excel/processing" th:object="${metadata}" id="testForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Grade Name: </label>
+                        <select th:field="*{gradeName}">
+                            <option th:each="p : ${gradeList}" th:value="${p}" th:text="${p}" />
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Subject Name: </label>
+                        <select th:field="*{subjectName}">
+                            <option th:each="p : ${subList}" th:value="${p}" th:text="${p}" />
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8" style="float:none;margin:auto;">
+                    <div class="form-group">
+                        <label>Test Type: </label>
+                        <select th:field="*{testType}">
+                            <option th:each="p : ${testTypeList}" th:value="${p}" th:text="${p}" />
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" align="center">
+                <div class="col-mb-6" style="float:none;margin:auto;">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <input type="button" class="btn btn-secondary" onclick="myFunction()" value="Reset">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.5.4/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.min.js}"></script>
+
+<script>
+function myFunction() {
+  document.getElementById("testForm").reset();
+}
+</script>
+</body>
+
+</html>
